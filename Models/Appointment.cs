@@ -14,5 +14,6 @@ public class Appointment
     public Stylist Stylist { get; set; }
     public DateTime Time { get; set; }
     public decimal TotalCost { get; set; }
-    public List<AppointmentService> AppointmentServices { get; set; }
+    public List<AppointmentService> AppointmentServices {get; set;}
+    public List<Service> Services {get; set;}
 }

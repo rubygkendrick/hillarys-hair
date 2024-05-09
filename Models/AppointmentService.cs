@@ -9,5 +9,7 @@ public class AppointmentService
     public int ServiceId { get; set; }
     [Required]
     public int AppointmentId { get; set; }
-    
+
+    public Service Service { get; set; }
+
 }

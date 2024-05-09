@@ -63,7 +63,41 @@ app.MapPut("/api/stylists/{id}/status", (HillarysHairDbContext db, int id) =>
     return Results.Ok(stylistToUpdate);
 });
 
+// write an endpoint that gets all the appointments and thei associated services
+app.MapGet("/api/appointments", (HillarysHairDbContext db) =>
+{
 
+    return db.Appointments
+      .Include(a => a.AppointmentServices) // Include AppointmentServices
+          .ThenInclude(aps => aps.Service)    // ThenInclude Services
+      .Select(a => new AppointmentDTO
+      {
+          Id = a.Id,
+          CustomerId = a.CustomerId,
+          Customer = new CustomerDTO
+          {
+              Id = a.Customer.Id,
+              Name = a.Customer.Name,
+              Phone = a.Customer.Phone
+          },
+          StylistId = a.StylistId,
+          Stylist = new StylistDTO
+          {
+              Id = a.Stylist.Id,
+              Name = a.Stylist.Name,
+              IsActive = a.Stylist.IsActive
+          },
+          Time = a.Time,
+          TotalCost = a.TotalCost,
+          Services = a.AppointmentServices.Select(aps => new ServiceDTO
+          {
+              Id = aps.Service.Id,
+              Type = aps.Service.Type,
+              Cost = aps.Service.Cost
+          }).ToList()
+      });
+
+});
 
 
 

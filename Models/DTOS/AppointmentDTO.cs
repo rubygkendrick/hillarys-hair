@@ -13,4 +13,5 @@ public class AppointmentDTO
     public DateTime Time { get; set; }
     public decimal TotalCost { get; set; }
     public List<AppointmentServiceDTO> AppointmentServices { get; set; }
+     public List<ServiceDTO> Services { get; set; }
 }

@@ -27,7 +27,7 @@ export const StylistList = () => {
         <div>
             <h1>Stylists</h1>
             {allStylists.map((stylist) => (
-                <div key={stylist.id} >
+                <div key={stylist.id} className="stylist" >
 
                     <h2>{stylist.name}</h2>
 
