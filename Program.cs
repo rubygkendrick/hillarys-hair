@@ -98,6 +98,48 @@ app.MapGet("/api/appointments", (HillarysHairDbContext db) =>
       });
 
 });
+//write an endpoint that gets an appointment by its id
+app.MapGet("/api/appointments/{id}", (HillarysHairDbContext db, int id) =>
+{
+    var appointment = db.Appointments
+        .Include(a => a.AppointmentServices)
+            .ThenInclude(aps => aps.Service)
+        .Select(a => new AppointmentDTO
+        {
+            Id = a.Id,
+            CustomerId = a.CustomerId,
+            Customer = new CustomerDTO
+            {
+                Id = a.Customer.Id,
+                Name = a.Customer.Name,
+                Phone = a.Customer.Phone
+            },
+            StylistId = a.StylistId,
+            Stylist = new StylistDTO
+            {
+                Id = a.Stylist.Id,
+                Name = a.Stylist.Name,
+                IsActive = a.Stylist.IsActive
+            },
+            Time = a.Time,
+            TotalCost = a.TotalCost,
+            Services = a.AppointmentServices.Select(aps => new ServiceDTO
+            {
+                Id = aps.Service.Id,
+                Type = aps.Service.Type,
+                Cost = aps.Service.Cost
+            }).ToList()
+        })
+        .SingleOrDefault(a => a.Id == id);
+
+    if (appointment == null)
+    {
+        return Results.BadRequest("Appointment not found.");
+    }
+
+    return Results.Ok(appointment);
+});
+
 
 
 

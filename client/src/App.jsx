@@ -4,6 +4,7 @@ import React from "react"
 import { Nav } from "./Nav"
 import { StylistList } from "./components/StylistList"
 import { AppointmentList } from "./components/AppointmentList"
+import { AppointmentDetails } from "./components/AppointmentDetails"
 
 
 
@@ -22,7 +23,7 @@ export const App = () => {
       <Route path="/appointments" element={<AppointmentList/>}> 
       
       </Route>
-      <Route path="/appointments/:id" element={<>Appointment Details</>}></Route>
+      <Route path="/appointments/:id" element={<AppointmentDetails/>}></Route>
       <Route path="/stylists" element={<StylistList/>} />
       <Route path="/customers" element={<>Customers</>} />
       
