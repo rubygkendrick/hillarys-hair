@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react"
 import { getAllAppointments } from "../data/appointmentData"
+import { useNavigate } from "react-router-dom"
 
 
 
 export const AppointmentList = () => {
 
     const [allAppointments, setAllAppointments] = useState([])
+    const navigate = useNavigate()
 
 
     const getAndResetAllAppointments = () => {
@@ -18,7 +20,9 @@ export const AppointmentList = () => {
         getAndResetAllAppointments()
     }, [])
 
- 
+    const handleDetailsClick = (event) => {
+        navigate(`/appointments/${event.target.value}`)
+    } 
 
     return (
         <>
@@ -34,7 +38,8 @@ export const AppointmentList = () => {
                     <h2>Time:</h2>
                     <h3>{new Date(appt.time).toLocaleDateString()}</h3> 
                     {appt.services.map(s => <h3 key = {s.id}>{s.type}</h3>)}
-                    <button className="btn-primary">Details</button>       
+                    <button className="btn-primary" value={appt.id} onClick={handleDetailsClick}
+                    >Details</button>       
                 </div>
             ))}
         </div>

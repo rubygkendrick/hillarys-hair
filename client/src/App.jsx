@@ -19,9 +19,13 @@ export const App = () => {
             
         }>
       
-      <Route path="/appointments" element={<AppointmentList/>} />
+      <Route path="/appointments" element={<AppointmentList/>}> 
+      
+      </Route>
+      <Route path="/appointments/:id" element={<>Appointment Details</>}></Route>
       <Route path="/stylists" element={<StylistList/>} />
       <Route path="/customers" element={<>Customers</>} />
+      
       </Route>
     </Routes>
   </>
