@@ -2,6 +2,7 @@ using HillarysHair.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Http.Json;
+using HillarysHair.Models.DTOS;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +28,40 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+//write an endpoint that gets all the stylists
+app.MapGet("/api/stylists", (HillarysHairDbContext db) =>
+{
+    return db.Stylists.Select(s => new StylistDTO
+    {
+        Id = s.Id,
+        Name = s.Name,
+        IsActive = s.IsActive
+    });
+
+});
+
+//write an endpoint that will change a stylists isActive status 
+app.MapPut("/api/stylists/{id}/status", (HillarysHairDbContext db, int id) =>
+{
+    Stylist stylistToUpdate = db.Stylists.Single(s => s.Id == id);
+
+    if (stylistToUpdate == null)
+    {
+        return Results.NotFound();
+    }
+    if (stylistToUpdate.IsActive == false)
+    {
+        stylistToUpdate.IsActive = true;
+    }
+    else
+    {
+        stylistToUpdate.IsActive = false;
+    }
+
+    db.SaveChanges();
+    return Results.Ok(stylistToUpdate);
+});
 
 
 
